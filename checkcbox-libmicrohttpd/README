@@ -1,0 +1,316 @@
+CheckCBox 
+
+CheckCBox is a C-Extension built on top of the Checked-C Clang compiler that provides users with 
+new pointer types and a set of compiler annotations to achieve
+1.) Program partitioning
+2.) Stack/Heap Protection
+3.) All Safety Guarantees provided by WebAssembly
+
+LibMicroHttpd has the following interesting (overflows) CVEs -->
+================================================================
+CVE-2021-3466 https://www.cvedetails.com/cve/CVE-2021-3466/
+
+Description:
+A flaw was found in libmicrohttpd. A missing bounds check in the post_process_urlencoded function leads
+to a buffer overflow, allowing a remote attacker to write arbitrary data in an application that uses libmicrohttpd. 
+The highest threat from this vulnerability is to data confidentiality and integrity as well as system availability.
+Only version 0.9.70 is vulnerable.
+
+Issue Reproduction -->
+Running Tests with Address Sanitizer shows buffer overflow with the changes (FIX) undone.
+
+Root Cause -->
+struct MHD_PostProcessor *pp is being overflowed in the function post_process_urlencoded 
+        char *kbuf = (char *) &pp[1];
+        t_memcpy (&kbuf[pp->buffer_pos], --> Site of overflow 
+                  start_key,
+                  key_len);
+  
+
+CheckCBox Solution --> 
+This would require "struct MHD_PostProcessor *pp" --> To be moved to Sandbox region (i,e Tainted pointer)
+--> However Tainted Pointers Can ONLY point to Tstruct, Requiring MHD_PostProcessor --> Also to be made a Tstruct (which in
+turn requires all member pointers to be tainted)
+The above "decision" has the following constraints -->
+
+1.) Requires Considerable changes (all Tstruct pointer members must be tainted)
+2.) Requires Re-ordering Struct members to move (indirection) confidential members outside Tstruct region
+================================================================
+CVE-2013-7039
+
+Description:
+Stack-based buffer overflow in the MHD_digest_auth_check function in libmicrohttpd before 0.9.32, 
+when MHD_OPTION_CONNECTION_MEMORY_LIMIT is set to a large value, allows remote attackers to cause a denial of service (crash)
+or possibly execute arbitrary code via a long URI in an authentication header.
+
+Root Cause:
+Not known. No commit showing fix for the above vulnerability
+
+Changes Made --> 
+Since MHD_digest_auth_check accepts user data (Authentication Headers)--> realm, username, password --> 
+All these three fields have been moved to the tainted region
+https://github.com/arunkumarbhattar/checkcbox-libmicrohttpd/commit/48fd5252a31a84efc193fa2bec2d99dd34b8f4d9 
+================================================================
+
+About
+=====
+
+GNU libmicrohttpd is a GNU package offering a C library that provides
+a compact API and implementation of an HTTP 1.1 web server (HTTP 1.0
+is also supported).  GNU libmicrohttpd only implements the HTTP 1.1
+protocol.  The main application must still provide the application
+logic to generate the content.
+
+GNU libmicrohttpd is dual-licensed under the GNU Lesser General Public
+License (LGPLv2.1+) and the eCos License.  See COPYING for details.
+
+
+Joining GNU
+===========
+
+This is a GNU program, developed by the GNU Project and part of the
+GNU Operating System. If you are the author of an awesome program and
+want to join us in writing Free Software, please consider making it an
+official GNU program and become a GNU maintainer.  You can find
+instructions on how to do so at http://www.gnu.org/help/evaluation.
+We are looking forward to hacking with you!
+
+
+Installation
+============
+
+See INSTALL for generic installation instructions.
+
+If you are using Git, run "./bootstrap" to create configure.
+
+In order to run the testcases, you need a recent version of libcurl.
+libcurl is not required if you just want to install the library.
+
+Especially for development, do use the MHD_USE_ERROR_LOG option to get
+error messages.
+
+
+Configure options
+=================
+
+
+If you are concerned about space, you should set "CFLAGS" to "-Os
+-fomit-frame-pointer" to have gcc generate tight code.
+
+You can use the following options to disable certain MHD features:
+
+--disable-https: no HTTPS / TLS / SSL support (significant reduction)
+--disable-messages: no error messages (they take space!)
+--disable-postprocessor: no MHD_PostProcessor API
+--disable-dauth: no digest authentication API
+--disable-epoll: no support for epoll, even on Linux
+
+The resulting binary should be about 30-40k depending on the platform.
+
+
+Portability
+===========
+
+The latest version of libmicrohttpd will try to avoid SIGPIPE on its
+sockets.  This should work on OS X, Linux and recent BSD systems (at
+least).  On other systems that may trigger a SIGPIPE on send/recv, the
+main application should install a signal handler to handle SIGPIPE.
+
+libmicrohttpd should work well on GNU/Linux, W32, FreeBSD, Darwin,
+NetBSD, OpenBSD, Solaris/OpenIndiana, and z/OS.
+Note that HTTPS is not supported on z/OS (yet).  We also have reports
+of users using it on vxWorks.
+
+
+Development Status
+==================
+
+This is a beta release for libmicrohttpd.  Before declaring the
+library stable, we should have testcases for the following features:
+
+- HTTP/1.1 pipelining (need to figure out how to ensure curl pipelines
+  -- and it seems libcurl has issues with pipelining,
+  see http://curl.haxx.se/mail/lib-2007-12/0248.html)
+- resource limit enforcement
+- client queuing early response, suppressing 100 CONTINUE
+- chunked encoding to validate handling of footers
+- more testing for SSL support
+- MHD basic and digest authentication
+
+In particular, the following functions are not covered by 'make check':
+- mhd_panic_std (mhd_panic.c); special case (abort)
+- parse_options (daemon.c)
+- MHD_get_version (daemon.c)
+
+
+Note that the working library is in src/microhttpd/ with the API in
+src/include/microhttpd.h.  An *experimental* (read: not yet working
+at all) newer implementation is in src/lib/, with the new API in
+src/include/microhttpd2.h.  The experimental code will need MUCH
+more testing and development, you are strongly advised to stick
+to microhttpd.h unless you are a MHD developer!
+
+For CHECKCBOX developmental use -->
+
+1) The below are the Initialization Commands under --> Settings > Build, Execution, Deployment > Makefile  
+./bootstrap
+./configure CC=/home/twinturbo/Desktop/CheckCBox_Compiler/llvm/cmake-build-debug/bin/clang --enable-shared --enable-build-type=debug --enable-sanitizers=address CFLAGS=-fPIC LDFLAGS=-L/home/twinturbo/Desktop/checkcbox-libmicrohttpd/Checkcbox_LIBS LIBS="-ldl -lstdc++ -lSBX_CON_LIB -lisc_lib_final"
+2.)libisc_final_isc.so (shared object) file is necessary instead of (libisc_final_isc.a) (static library) for compilation -->
+---> When compiling the above library just change --> "add_library(isc_lib_final FINAL ..." to "add_library(isc_lib_final SHARED ..."
+3.) Finally your executables would look for the above shared object file --> 
+--> add the <Checkcbox_LIBS> directory to LD_LIBRARY_PATH
+
+./configure --enable-tests CC=/home/arun/Desktop/CheckCBox_Compiler/llvm/cmake-build-debug/bin/clang CFLAGS="-g -fPIC -fheapsbx -DHEAP_SBX" 
+LDFLAGS="-L/home/arun/Desktop/untouched/checkcbox-libmicrohttpd/HoardLib -L/home/arun/Desktop/untouched/checkcbox-libmicrohttpd/NOOP_SBX"
+LIBS="-ldl -lstdc++ -lhoard -lprofile -lSBX_CON_LIB"
+
+https://github.com/Karlson2k/libmicrohttpd/commit/a110ae6276660bee3caab30e9ff3f12f85cf3241# --> Triggers 2 Buffer overflows when you shoot make check (runs tests)
+
+test-suite.log before checkcbox -->
+
+=============================================================
+   GNU libmicrohttpd 0.9.75: src/microhttpd/test-suite.log
+=============================================================
+
+# TOTAL: 43
+# PASS:  40
+# SKIP:  0
+# XFAIL: 0
+# FAIL:  3
+# XPASS: 0
+# ERROR: 0
+
+.. contents:: :depth: 2
+
+FAIL: test_postprocessor_md
+===========================
+
+=================================================================
+==276703==ERROR: AddressSanitizer: global-buffer-overflow on address 0x00000053374a at pc 0x0000004cf43a bp 0x7fff08ee1e70 sp 0x7fff08ee1620
+READ of size 5632496 at 0x00000053374a thread T0
+    #0 0x4cf439  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/test_postprocessor_md+0x4cf439)
+    #1 0x50a95e  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/test_postprocessor_md+0x50a95e)
+    #2 0x508e4b  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/test_postprocessor_md+0x508e4b)
+    #3 0x507277  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/test_postprocessor_md+0x507277)
+    #4 0x7fcbaf026082  (/lib/x86_64-linux-gnu/libc.so.6+0x24082)
+    #5 0x42a54d  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/test_postprocessor_md+0x42a54d)
+
+0x00000053374a is located 54 bytes to the left of global variable '<string literal>' defined in 'test_postprocessor_md.c:258:53' (0x533780) of size 23
+  '<string literal>' is ascii string '&yyyy=yyyy&zzzz=&aaaa='
+0x00000053374a is located 0 bytes to the right of global variable '<string literal>' defined in 'test_postprocessor_md.c:256:53' (0x533740) of size 10
+  '<string literal>' is ascii string 'xxxx=xxxx'
+SUMMARY: AddressSanitizer: global-buffer-overflow (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/test_postprocessor_md+0x4cf439)
+Shadow bytes around the buggy address:
+  0x00008009e690: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x00008009e6a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x00008009e6b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x00008009e6c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x00008009e6d0: 00 00 00 00 01 f9 f9 f9 f9 f9 f9 f9 00 00 00 00
+=>0x00008009e6e0: 02 f9 f9 f9 f9 f9 f9 f9 00[02]f9 f9 f9 f9 f9 f9
+  0x00008009e6f0: 00 00 07 f9 f9 f9 f9 f9 00 04 f9 f9 f9 f9 f9 f9
+  0x00008009e700: 07 f9 f9 f9 f9 f9 f9 f9 00 00 00 00 00 00 00 00
+  0x00008009e710: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x00008009e720: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x00008009e730: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+  Shadow gap:              cc
+==276703==ABORTING
+FAIL test_postprocessor_md (exit status: 88)
+
+FAIL: test_postprocessor
+========================
+=================================================================
+==277127==ERROR: AddressSanitizer: memcpy-param-overlap: memory ranges [0x61a0000b0520,0xe19fe71e1b60) and [0x000000513260, 0x7fffe76448a0) overlap
+    #0 0x4c0ea9  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/.libs/test_postprocessor+0x4c0ea9)
+    #1 0x7f3005e54dce  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/.libs/libmicrohttpd.so.12+0x9fdce)
+    #2 0x7f3005e532bb  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/.libs/libmicrohttpd.so.12+0x9e2bb)
+    #3 0x4fdc54  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/.libs/test_postprocessor+0x4fdc54)
+    #4 0x4f9f24  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/.libs/test_postprocessor+0x4f9f24)
+    #5 0x4f8ce7  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/.libs/test_postprocessor+0x4f8ce7)
+    #6 0x7f3005802082  (/lib/x86_64-linux-gnu/libc.so.6+0x24082)
+    #7 0x41c31d  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/.libs/test_postprocessor+0x41c31d)
+
+0x61a0000b0925 is located 0 bytes to the right of 1189-byte region [0x61a0000b0480,0x61a0000b0925)
+allocated by thread T0 here:
+    #0 0x4c25a7  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/.libs/test_postprocessor+0x4c25a7)
+    #1 0x7f3005e52ea5  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/.libs/libmicrohttpd.so.12+0x9dea5)
+    #2 0x4fdb5d  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/.libs/test_postprocessor+0x4fdb5d)
+    #3 0x4f9f24  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/.libs/test_postprocessor+0x4f9f24)
+    #4 0x4f8ce7  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/.libs/test_postprocessor+0x4f8ce7)
+    #5 0x7f3005802082  (/lib/x86_64-linux-gnu/libc.so.6+0x24082)
+
+0x00000051326c is located 0 bytes to the right of global variable '<string literal>' defined in 'test_postprocessor.c:298:40' (0x513260) of size 12
+  '<string literal>' is ascii string 'abc=def&x=5'
+SUMMARY: AddressSanitizer: memcpy-param-overlap (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/.libs/test_postprocessor+0x4c0ea9)
+==277127==ABORTING
+FAIL test_postprocessor (exit status: 88)
+
+FAIL: test_postprocessor_amp
+============================
+
+=================================================================
+==277165==ERROR: AddressSanitizer: global-buffer-overflow on address 0x00000050e2a9 at pc 0x0000004c11ea bp 0x7ffde5812730 sp 0x7ffde5811ee0
+READ of size 5425264 at 0x00000050e2a9 thread T0
+    #0 0x4c11e9  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/.libs/test_postprocessor_amp+0x4c11e9)
+    #1 0x7fd49a266dce  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/.libs/libmicrohttpd.so.12+0x9fdce)
+    #2 0x7fd49a2652bb  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/.libs/libmicrohttpd.so.12+0x9e2bb)
+    #3 0x4f9146  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/.libs/test_postprocessor_amp+0x4f9146)
+    #4 0x7fd499c14082  (/lib/x86_64-linux-gnu/libc.so.6+0x24082)
+    #5 0x41c2fd  (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/.libs/test_postprocessor_amp+0x41c2fd)
+
+0x00000050e2a9 is located 0 bytes to the right of global variable '<string literal>' defined in 'test_postprocessor_amp.c:35:5' (0x50d6a0) of size 3081
+  '<string literal>' is ascii string 'a=xx+xx+xxx+xxxxx+xxxx+xxxxxxxx+xxx+xxxxxx+xxx+xxx+xxxxxxx+xxxxx%0A+++++++xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx%0A+++++++--%3E%0A++++++++++++++%3Cxxxxx+xxxxx%3D%22xxx%25%22%3E%0A+++++++++++%3Cxx%3E%0A+++++++++++++++%3Cxx+xxxxxxx%3D%22x%22+xxxxx%3D%22xxxxx%22%3E%0A+++++++++++++++++++%3Cxxxxx+xxxxx%3D%22xxx%25%22%3E%0A+++++++++++++++++++++++%3Cxx%3E%0A+++++++++++++++++++++++++++%3Cxx+xxxxx%3D%22xxxx%22%3E%0A+++++++++++++++++++++++++++++++%3Cx+xxxxx%3D%22xxxx-xxxxx%3Axxxxx%22%3Exxxxx%3A%3C%2Fx%3E%0A%0A+++++++++++++++++++++++++++++++%3Cx+xxxxx%3D%22xxxx-xxxxx%3Axxxxx%22%3Exxx%3A%3C%2Fx%3E%0A%0A+++++++++++++++++++++++++++++++%3Cx+xxxxx%3D%22xxxx-xxxxx%3Axxxxx%3B+xxxx-xxxxxx%3A+xxxx%3B%22%3Exxxxx+xxxxx%3A%3C%2Fx%3E%0A+++++++++++++++++++++++++++%3C%2Fxx%3E%0A+++++++++++++++++++++++%3C%2Fxx%3E%0A+++++++++++++++++++%3C%2Fxxxxx%3E%0A+++++++++++++++%3C%2Fxx%3E%0A+++++++++++++++%3Cxx+xxxxx%3D%22xxxx-xxxxx%3A+xxxxx%3B+xxxxx%3A+xxxx%22%3E%26xxxxx%3B+%3Cxxxx%0A+++++++++++++++++++++++xxxxx%3D%22xxxxxxxxxxxxxxx%22%3Exxxx.xx%3C%2Fxxxx%3E%0A+++++++++++++++%3C%2Fxx%3E%0A+++++++++++%3C%2Fxx%3E%0A++++++++++++++++++++++++++%3Cxx%3E%0A+++++++++++++++++++%3Cxx+xxxxx%3D%22xxxx-xxxxx%3A+xxxxx%3B+xxxxx%3A+xxxx%22%3E%26xxxxx%3B+%3Cxxxx%0A+++++++++++++++++++++++++++xxxxx%3D%22xxxxxxxxxxxxxxx%22%3Exxx.xx%3C%2Fxxxx%3E%0A+++++++++++++++++++%3C%2Fxx%3E%0A+++++++++++++++%3C%2Fxx%3E%0A++++++++++++++++++++++%3Cxx%3E%0A+++++++++++++++%3Cxx+xxxxx%3D%22xxxx-xxxxx%3A+xxxxx%3Bxxxx-xxxxxx%3A+xxxx%3B+xxxxx%3A+xxxx%22%3E%26xxxxx%3B+%3Cxxxx%0A+++++++++++++++++++++++xxxxx%3D%22xxxxxxxxxxxxxxx%22%3Exxxx.xx%3C%2Fxxxx%3E%3C%2Fxx%3E%0A+++++++++++%3C%2Fxx%3E%0A+++++++%3C%2Fxxxxx%3E%0A+++++++%3C%21--%0A+++++++xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx%0A+++++++xxx+xx+xxxxx+xxxxxxx+xxxxxxx%0A+++++++xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx%0A+++++++--%3E%0A+++%3C%2Fxxx%3E%0A%0A%0A%0A+++%3Cxxx+xxxxx%3D%22xxxxxxxxx%22+xx%3D%22xxxxxxxxx%22%3E%3C%2Fxxx%3E%0A%0A+++%3Cxxx+xx%3D%22xxxx%22+xxxxx%3D%22xxxx%22%3E%0A+++++++%3Cxxxxx+xxxxx%3D%22xxxxxxxxx%22%3E%0A+++++++++++%3Cxx%3E%0A+++++++++++++++%3Cxx+xxxxxxx%3D%22x%22+xx%3D%22xxxxxxxxxxxxx%22+xxxxx%3D%22xxxxxxxxxxxxx%22%3E%0A+++++++++++++++++++%3Cxxx+xx%3D%22xxxxxx%22%3E%3C%2Fxxx%3E%0A+++++++++++++++%3C%2Fxx%3E%0A+++++++++++%3C%2Fxx%3E%0A+++++++++++%3Cxx%3E%0A+++++++++++++++%3Cxx+xx%3D%22xxxxxxxxxxxxxxxxx%22+xxxxx%3D%22xxxxxxxxxxxxxxxxx%22%3E%3C%2Fxx%3E%0A+++++++++++++++%3Cxx+xx%3D%22xxxxxxxxxxxxxx%22+xxxxx%3D%22xxxxxxxxxxxxxx%22%3E%0A+++++++++++++++++++%3Cxxx+xx%3D%22xxxxxxx%22%3E%3C%2Fxxx%3E%0A+++++++++++++++%3C%2Fxx%3E%0A+++++++++++%3C%2Fxx%3E%0A+++++++++++%3Cxx%3E%0A+++++++++++++++%3Cxx+xxxxxxx%3D%22x%22+xx%3D%22xxxxxxxxxxxxx%22+xxxxx%3D%22xxxxxxxxxxxxx%22%3E%0A+++++++++++++++++++%3Cxxx+xx%3D%22xxxxxx%22%3E%3C%2Fxxx%3E%0A+++++++++++++++%3C%2Fxx%3E%0A+++++++++++%3C%2Fxx%3E%0A+++++++%3C%2Fxxxxx%3E%0A+++%3C%2Fxxx%3E%0A%3C%2Fxxx%3E%0A%0A%3Cxxx+xx%3D%22xxxxxx%22%3E%3C%2Fxxx%3E%0A%0A%3C%2Fxxxx%3E%0A%3C%2Fxxxx%3E+&b=value'
+SUMMARY: AddressSanitizer: global-buffer-overflow (/home/twinturbo/Desktop/checkcbox-libmicrohttpd/src/microhttpd/.libs/test_postprocessor_amp+0x4c11e9)
+Shadow bytes around the buggy address:
+  0x000080099c00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x000080099c10: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x000080099c20: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x000080099c30: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x000080099c40: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x000080099c50: 00 00 00 00 00[01]f9 f9 f9 f9 f9 f9 f9 f9 f9 f9
+  0x000080099c60: f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9
+  0x000080099c70: f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9
+  0x000080099c80: f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9
+  0x000080099c90: f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9
+  0x000080099ca0: f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+  Shadow gap:              cc
+==277165==ABORTING
+FAIL test_postprocessor_amp (exit status: 88)
+                                                                                                                  
