@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.13)
 set(CMAKE_C_COMPILER  /home/supercharger/extraspace/CheckCBox_Compiler/llvm/cmake-build-debug/bin/clang)
-set(CMAKE_CXX_COMPILER  /home/supercharger/extraspace/CheckCBox_Compiler/llvm/cmake-build-debug/bin/clang++)
 project(checkedc-parson
         VERSION 0.1
         DESCRIPTION "An example application that simulates a typical image parsing program")
@@ -29,7 +28,7 @@ target_include_directories(wasm PUBLIC "${CMAKE_SOURCE_DIR}/parson.wasm.h"
 add_executable(NonWasm "${CMAKE_SOURCE_DIR}/tests.tainted.c"
         "${CMAKE_SOURCE_DIR}/parson.tainted.c"
         )
-target_compile_options(NonWasm PRIVATE -g -fPIE -Wall -Wextra -fwasmsbx -DWASM_SBX)
+target_compile_options(NonWasm PRIVATE -O2 -fPIE -Wall -Wextra -fwasmsbx -DWASM_SBX)
 target_include_directories(NonWasm PUBLIC "${CMAKE_SOURCE_DIR}/parson.tainted.h"
         )
 target_link_libraries(NonWasm "${CMAKE_SOURCE_DIR}/static_libraries/tainted.a"
@@ -41,13 +40,13 @@ set_target_properties(NonWasm PROPERTIES LINKER_LANGUAGE CXX)
 add_executable(Hoard "${CMAKE_SOURCE_DIR}/tests.tainted.c"
         "${CMAKE_SOURCE_DIR}/parson.tainted.c"
         )
-target_compile_options(Hoard PRIVATE -fheapsbx -g -DHEAP_SBX)
+target_compile_options(Hoard PRIVATE -fheapsbx -O2  -DHEAP_SBX)
 target_include_directories(Hoard PUBLIC "${CMAKE_SOURCE_DIR}/parson.tainted.h"
         )
 target_link_libraries(Hoard #"${CMAKE_SOURCE_DIR}/static_libraries/tainted.a"
         "${CMAKE_SOURCE_DIR}/static_libraries/libSBX_CON_LIB.a"
         "${CMAKE_SOURCE_DIR}/static_libraries/libisc_lib_final.a"
-        "${CMAKE_SOURCE_DIR}/HoardLib/libhoard.so"
-        "${CMAKE_SOURCE_DIR}/HoardLib/libprofile.a"
+        "${CMAKE_SOURCE_DIR}/../HoardLIB/libhoard.so"
+        "${CMAKE_SOURCE_DIR}/../HoardLIB/libprofile.a"
         dl)
 set_target_properties(Hoard PROPERTIES LINKER_LANGUAGE CXX)
