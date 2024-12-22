@@ -1,0 +1,48 @@
+/snap/clion/296/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/snap/clion/296/bin/ninja/linux/x64/ninja -G Ninja -S /home/arun/Desktop/TypeFlexer_EVAL/checkcbox-libpng/contrib/pngminus -B /home/arun/Desktop/TypeFlexer_EVAL/checkcbox-libpng/contrib/pngminus/cmake-build-debug
+CMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.5 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+CMake Deprecation Warning at CMakeLists.txt:2 (cmake_policy):
+  Compatibility with CMake < 3.5 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- The C compiler identification is Clang 12.0.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /home/arun/Desktop/TypeFlexer-Clang/llvm/cmake-build-debug/bin/clang - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+CMake Deprecation Warning at /home/arun/Desktop/TypeFlexer_EVAL/checkcbox-libpng/CMakeLists.txt:28 (cmake_minimum_required):
+  Compatibility with CMake < 3.5 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+CMake Deprecation Warning at /home/arun/Desktop/TypeFlexer_EVAL/checkcbox-libpng/CMakeLists.txt:29 (cmake_policy):
+  Compatibility with CMake < 3.5 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- The ASM compiler identification is Clang with GNU-like command-line
+-- Found assembler: /home/arun/Desktop/TypeFlexer-Clang/llvm/cmake-build-debug/bin/clang
+-- Found ZLIB: /usr/lib/x86_64-linux-gnu/libz.so (found version "1.2.11")
+-- Performing Test HAVE_LD_VERSION_SCRIPT
+-- Performing Test HAVE_LD_VERSION_SCRIPT - Success
+-- Symbol prefix: 
+-- Configuring done (1.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/arun/Desktop/TypeFlexer_EVAL/checkcbox-libpng/contrib/pngminus/cmake-build-debug

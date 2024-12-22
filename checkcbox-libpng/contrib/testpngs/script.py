@@ -1,7 +1,7 @@
 import subprocess, os, re
 import time
 
-path = "/home/arun/Desktop/checkcbox-libpng/contrib/pngminus/cmake-build-debug/png2pnm"
+path = "../pngminus/cmake-build-debug/png2pnm_hoard"
 benchmark = open("benchmark.txt", "w")
 globalExecutionTime = 0
 globalFileCount = 0

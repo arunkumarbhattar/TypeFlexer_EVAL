@@ -27,11 +27,14 @@
 
 cmake_minimum_required(VERSION 3.1)
 cmake_policy(VERSION 3.1)
-set(CMAKE_C_COMPILER /home/arun/Desktop/CheckCBox_Compiler/llvm/cmake-build-debug/bin/clang)
-add_compile_options(-fnoopsbx)
+# Set the C compiler to Clang
+set(CMAKE_C_COMPILER /home/arun/Desktop/TypeFlexer-Clang/llvm/cmake-build-debug/bin/clang)
+
+# Add compile options
+add_compile_options(-fwasmsbx -DWASM_SBX -O2)
+
+# Add linker options
 add_link_options(-ldl -lstdc++)
-add_link_options("${CMAKE_SOURCE_DIR}/NOOP_SBX/libSBX_CON_LIB.a"
-        )
 
 project(libpng C ASM)
 enable_testing()
@@ -616,8 +619,8 @@ if(PNG_STATIC)
   # does not work without changing name
   set(PNG_LIB_NAME_STATIC png_static)
   add_library(png_static STATIC ${libpng_sources})
-  #target_compile_options(png_static PRIVATE -fwasmsbx -DWASM_SBX)
-  target_compile_options(png_static PRIVATE -fheapsbx -DHEAP_SBX)
+  target_compile_options(png_static PRIVATE -O2 -fwasmsbx -DWASM_SBX)
+  #target_compile_options(png_static PRIVATE -fheapsbx -DHEAP_SBX)
   add_dependencies(png_static genfiles)
   # MSVC doesn't use a different file extension for shared vs. static
   # libs. We are able to change OUTPUT_NAME to remove the _static
@@ -843,12 +846,11 @@ if(PNG_TESTS AND PNG_SHARED)
                OPTIONS --strict vpAg=if-safe
                FILES "${PNGTEST_PNG}")
 
-  add_link_options(-ldl -lstdc++ -g )
+  add_link_options(-ldl -lstdc++ )
   add_executable(pngimage ${pngimage_sources})
-  target_compile_options(pngimage PRIVATE -g -ferror-limit=92385493 -fsanitize=address ) # CheckCBox requirement TESTING --> To track heap/stack overflows and leaks
-  target_link_options(pngimage PRIVATE -g  -fsanitize=address -static-libsan)
-  target_link_libraries(pngimage "${CMAKE_SOURCE_DIR}/CheckCBoxLibs/libSBX_CON_LIB.a"
-          "${CMAKE_SOURCE_DIR}/CheckCBoxLibs/libisc_lib_final.a"
+  target_compile_options(pngimage PRIVATE -O2 -DWASM_SBX) # CheckCBox requirement TESTING --> To track heap/stack overflows and leaks
+  target_link_libraries(pngimage "${CMAKE_SOURCE_DIR}/../../../WASM_SBX_LIB/libSBX_CON_LIB.a"
+          "${CMAKE_SOURCE_DIR}/../../../WASM_SBX_LIB/libisc_lib_final.a"
           dl)
   target_link_libraries(pngimage png)
 

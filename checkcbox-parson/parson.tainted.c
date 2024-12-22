@@ -385,7 +385,7 @@ static void remove_comments(_TPtr<char> string, _Nt_array_ptr<const char> start_
                     for (i = 0; i < (ptr_ - unchecked_string) + end_token_len; i++) {
                         unchecked_string[i] = ' ';
                     }
-                    
+
                     string = ptr_ + end_token_len - 1;
                 }
             } // end _Unchecked
@@ -456,7 +456,7 @@ return JSONFailure;
 }
 _TPtr<_TPtr<TJSON_Value>> temp_values = (_TPtr<_TPtr<TJSON_Value>>)parson_tainted_malloc(TJSON_Value*, new_capacity * sizeof(_TPtr<TJSON_Value>));
 if (temp_values == NULL) {
-parson_free_unchecked(void, (_TArray_ptr<void>)temp_names);
+    parson_tainted_free(void, (_TArray_ptr<void>)temp_names);
 return JSONFailure;
 }
 
@@ -1017,7 +1017,7 @@ _TPtr<TJSON_Value> parse_boolean_value(_Ptr<_TPtr<const char>> str_cpy) {
     return NULL;
 }
 
-/* T_Checked ODO: The way this function deals with end is not well supported by the compiler. 
+/* T_Checked ODO: The way this function deals with end is not well supported by the compiler.
  * No initialization, needing to take the address, we_Checked ird counting.
  * Leaving this function unchecked for now as a result. */
 /*

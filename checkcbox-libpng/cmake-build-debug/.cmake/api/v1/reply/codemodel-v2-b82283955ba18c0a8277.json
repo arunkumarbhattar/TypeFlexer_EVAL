@@ -1,0 +1,268 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-f2f8061a739dd5dee25d.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.1"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						20,
+						21,
+						22,
+						23
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "libpng",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						20,
+						21,
+						22,
+						23
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "genfiles::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-genfiles-Debug-72bad95444dac0be3ec8.json",
+					"name" : "genfiles",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "genprebuilt::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-genprebuilt-Debug-c71046b34c69bf115ef8.json",
+					"name" : "genprebuilt",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "gensym::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-gensym-Debug-61df380ff9578cc31637.json",
+					"name" : "gensym",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "genvers::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-genvers-Debug-5c6e3638548aafb2801f.json",
+					"name" : "genvers",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "png::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-png-Debug-6d4f9390fd25cfc8266c.json",
+					"name" : "png",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "png-fix-itxt::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-png-fix-itxt-Debug-b9de7d90ba73d9d64ddc.json",
+					"name" : "png-fix-itxt",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "png_static::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-png_static-Debug-09f061a86926ddb9edc7.json",
+					"name" : "png_static",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "pngfix::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-pngfix-Debug-8b1554f40a1dfd7b7cfa.json",
+					"name" : "pngfix",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "pngimage::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-pngimage-Debug-b607c9fe89ed096b629d.json",
+					"name" : "pngimage",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "pnglibconf_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-pnglibconf_c-Debug-a12c8e21b7abc48dbd23.json",
+					"name" : "pnglibconf_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "pnglibconf_h::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-pnglibconf_h-Debug-80602ef7aa31a6e197bf.json",
+					"name" : "pnglibconf_h",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "pnglibconf_out::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-pnglibconf_out-Debug-5a7c42631b98d3706a5a.json",
+					"name" : "pnglibconf_out",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "pngprefix_h::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-pngprefix_h-Debug-940c5fc2375d8ffb1472.json",
+					"name" : "pngprefix_h",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "pngstest::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-pngstest-Debug-0fb8b1cb782e6d049f14.json",
+					"name" : "pngstest",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "pngtest::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-pngtest-Debug-216a959a1060e449108c.json",
+					"name" : "pngtest",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "pngunknown::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-pngunknown-Debug-dd25a16cfd841069bc28.json",
+					"name" : "pngunknown",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "pngvalid::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-pngvalid-Debug-0e732bf4b744d4015209.json",
+					"name" : "pngvalid",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "scripts_intprefix_out::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-scripts_intprefix_out-Debug-01c4de13263defdf6aa6.json",
+					"name" : "scripts_intprefix_out",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "scripts_pnglibconf_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-scripts_pnglibconf_c-Debug-54622600018953cbbbb9.json",
+					"name" : "scripts_pnglibconf_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "scripts_prefix_out::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-scripts_prefix_out-Debug-12a9dd56110568adc16f.json",
+					"name" : "scripts_prefix_out",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "scripts_sym_out::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-scripts_sym_out-Debug-b3fa439f683e12f1df6e.json",
+					"name" : "scripts_sym_out",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "scripts_symbols_chk::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-scripts_symbols_chk-Debug-793f8f6a06a52dccf2a6.json",
+					"name" : "scripts_symbols_chk",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "scripts_symbols_out::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-scripts_symbols_out-Debug-2191b5cc7fc42a1fe77a.json",
+					"name" : "scripts_symbols_out",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "scripts_vers_out::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-scripts_vers_out-Debug-f5b44ef965d2c5c47d7d.json",
+					"name" : "scripts_vers_out",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/arun/Desktop/TypeFlexer_EVAL/checkcbox-libpng/cmake-build-debug",
+		"source" : "/home/arun/Desktop/TypeFlexer_EVAL/checkcbox-libpng"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

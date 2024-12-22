@@ -3658,8 +3658,11 @@ t_png_combine_row(png_const_structrp png_ptr, t_png_bytep dp, int display)
                     /* The true default - use a memcpy: */
                     for (;;)
                     {
-                        t_memcpy(dp, sp, bytes_to_copy);
-
+#ifndef NOOP_SBX
+                       t_memcpy(dp, sp, bytes_to_copy);
+#else
+                       memcpy(dp, sp, bytes_to_copy);
+#endif
                         if (row_width <= bytes_to_jump)
                             return;
 
@@ -3683,7 +3686,11 @@ t_png_combine_row(png_const_structrp png_ptr, t_png_bytep dp, int display)
          * from the temporary row buffer (notice that this overwrites the end of the
          * destination row if it is a partial byte.)
          */
+#ifndef NOOP_SBX
         t_memcpy(dp, sp, PNG_ROWBYTES(pixel_depth, row_width));
+#else
+        memcpy(dp, sp, PNG_ROWBYTES(pixel_depth, row_width));
+#endif
 
     /* Restore the overwritten bits from the last byte if necessary. */
     if (end_ptr != NULL)
@@ -4405,12 +4412,18 @@ t_png_do_read_interlace(png_row_infop row_info, t_png_bytep row, int pass,
                     v = (_TPtr<png_byte>)malloc<png_byte>(8);
 #endif
                     int j;
-
+#ifndef NOOP_SBX
                     t_memcpy(v, sp, pixel_bytes);
-
+#else
+                   memcpy(v, sp, pixel_bytes);
+#endif
                     for (j = 0; j < jstop; j++)
                     {
-                        t_memcpy(dp, v, pixel_bytes);
+#ifndef NOOP_SBX
+                       t_memcpy(dp, v, pixel_bytes);
+#else
+                       memcpy(dp, v, pixel_bytes);
+#endif
                         dp -= pixel_bytes;
                     }
 

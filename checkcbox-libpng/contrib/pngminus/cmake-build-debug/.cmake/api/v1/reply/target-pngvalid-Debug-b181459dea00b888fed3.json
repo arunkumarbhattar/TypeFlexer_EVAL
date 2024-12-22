@@ -1,0 +1,196 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "libpng/pngvalid"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_executable",
+			"add_link_options",
+			"target_link_libraries",
+			"add_compile_options",
+			"add_definitions",
+			"include_directories"
+		],
+		"files" : 
+		[
+			"/home/arun/Desktop/TypeFlexer_EVAL/checkcbox-libpng/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 716,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 37,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 717,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 34,
+				"parent" : 0
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 173,
+				"parent" : 0
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 306,
+				"parent" : 0
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 591,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g -fcolor-diagnostics"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-fwasmsbx"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-DWASM_SBX"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-O2"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 5,
+					"define" : "PNG_INTEL_SSE_OPT=1"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 6,
+					"path" : "/home/arun/Desktop/TypeFlexer_EVAL/checkcbox-libpng/contrib/pngminus/cmake-build-debug/libpng"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "/home/arun/Desktop/TypeFlexer_EVAL/checkcbox-libpng"
+				}
+			],
+			"language" : "C",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 3,
+			"id" : "png::@0ccab45d953d31f6e478"
+		}
+	],
+	"id" : "pngvalid::@0ccab45d953d31f6e478",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "-g",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "-rdynamic",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-ldl",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-lstdc++",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "-Wl,-rpath,/home/arun/Desktop/TypeFlexer_EVAL/checkcbox-libpng/contrib/pngminus/cmake-build-debug/libpng",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "libpng/libpng16d.so.16.39.git",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lz",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lm",
+				"role" : "libraries"
+			}
+		],
+		"language" : "C"
+	},
+	"name" : "pngvalid",
+	"nameOnDisk" : "pngvalid",
+	"paths" : 
+	{
+		"build" : "libpng",
+		"source" : "/home/arun/Desktop/TypeFlexer_EVAL/checkcbox-libpng"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/arun/Desktop/TypeFlexer_EVAL/checkcbox-libpng/contrib/libtests/pngvalid.c",
+			"sourceGroupIndex" : 0
+		}
+	],
+	"type" : "EXECUTABLE"
+}
