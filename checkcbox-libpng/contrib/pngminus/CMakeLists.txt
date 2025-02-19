@@ -19,7 +19,7 @@ endif()
 # png2pnm
 add_link_options(-ldl -lstdc++) # CheckCBox requirement --> Checkcbox Static libraries run C++ internally
 add_executable(png2pnm png2pnm.c)
-target_compile_options(png2pnm PRIVATE -O2 -fwasmsbx -DWASM_SBX) # CheckCBox requirement TESTING --> To track heap/stack overflows and leaks
+target_compile_options(png2pnm PRIVATE -g -fwasmsbx -DWASM_SBX) # CheckCBox requirement TESTING --> To track heap/stack overflows and leaks
 target_link_libraries(png2pnm ${PNGMINUS_PNG_LIBRARY})
 target_link_options(png2pnm PRIVATE) # CheckCBox requirement TESTING
 # CheckCBOX static Library dependencies
@@ -57,24 +57,21 @@ target_link_libraries(pnm2png_noop "${CMAKE_SOURCE_DIR}/../../../NOOP_LIB/libSBX
 # png2pnm
 add_link_options(-ldl -lstdc++) # CheckCBox requirement --> Checkcbox Static libraries run C++ internally
 add_executable(png2pnm_hoard png2pnm.c)
-target_compile_options(png2pnm_hoard PRIVATE -O2 -fheapsbx -DHEAP_SBX) # CheckCBox requirement TESTING --> To track heap/stack overflows and leaks
+target_compile_options(png2pnm_hoard PRIVATE -O2 -fno-flsm -fheapsbx -DHEAP_SBX) # CheckCBox requirement TESTING --> To track heap/stack overflows and leaks
 target_link_libraries(png2pnm_hoard ${PNGMINUS_PNG_LIBRARY})
 target_link_options(png2pnm_hoard PRIVATE) # CheckCBox requirement TESTING
 # CheckCBOX static Library dependencies
 target_link_libraries(png2pnm_hoard
         "${CMAKE_SOURCE_DIR}/../../../NOOP_LIB/libSBX_CON_LIB.a"
         "${CMAKE_SOURCE_DIR}/../../../HoardLIB/libhoard.so"
-        "${CMAKE_SOURCE_DIR}/../../../HoardLIB/libprofile.a"
         dl)
 # pnm2png
 add_executable(pnm2png_hoard pnm2png.c)
-target_compile_options(pnm2png_hoard PRIVATE -O2 -fheapsbx -DHEAP_SBX) # CheckCBox requirement TESTING
+target_compile_options(pnm2png_hoard PRIVATE -O2 -fno-flsm -fheapsbx -DHEAP_SBX) # CheckCBox requirement TESTING
 target_link_libraries(pnm2png_hoard ${PNGMINUS_PNG_LIBRARY})
 target_link_options(pnm2png_hoard PRIVATE ) # CheckCBox requirement TESTING
 # CheckCBOX static Library dependencies
 target_link_libraries(pnm2png_hoard
         "${CMAKE_SOURCE_DIR}/../../../NOOP_LIB/libSBX_CON_LIB.a"
         "${CMAKE_SOURCE_DIR}/../../../HoardLIB/libhoard.so"
-        #"${CMAKE_SOURCE_DIR}/NOOP_LIB/libisc_lib_final.a"
-        "${CMAKE_SOURCE_DIR}/../../../HoardLIB/libprofile.a"
         dl)

@@ -1,1 +1,0 @@
-/home/arun/Desktop/TypeFlexer-Clang/llvm/cmake-build-debug/bin/clang -ldl -lstdc++ CMakeFiles/wasm.dir/tests.c.o CMakeFiles/wasm.dir/parson.wasm.c.o -o wasm  ../static_libraries/tainted.a ../static_libraries/libSBX_CON_LIB.a ../static_libraries/libisc_lib_final.a -ldl 

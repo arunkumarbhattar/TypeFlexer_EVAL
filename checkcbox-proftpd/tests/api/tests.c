@@ -90,85 +90,125 @@ static Suite *tests_get_suite(const char *suite) {
   return NULL;
 }
 
+/* Comparison function for qsort */
+static int cmp_doubles(const void *a, const void *b) {
+    double da = *(const double *)a;
+    double db = *(const double *)b;
+    if (da < db)
+        return -1;
+    else if (da > db)
+        return 1;
+    else
+        return 0;
+}
+
 int main(int argc, char *argv[]) {
-  const char *log_file = "api-tests.log";
-  const char *xml_file = "api-tests.xml";
-  int nfailed = 0;
-  SRunner *runner = NULL;
-  char *requested = NULL;
+    const char *log_file = "api-tests.log";
+    const char *xml_file = "api-tests.xml";
+    int overall_failed = 0;
+    const int runs = 10;
+    double run_times[runs];
+    int i;
 
-  runner = srunner_create(NULL);
+    /* Run tests multiple times */
+    for (i = 0; i < runs; i++) {
+        SRunner *runner = NULL;
+        int nfailed = 0;
+        char *requested = NULL;
+        struct timespec start, end;
+        double elapsed;
 
-  /* XXX This log name should be set outside this code, e.g. via environment
-   * variable or command-line option.
-   */
-  srunner_set_log(runner, log_file);
-  if (getenv("PR_XML_TEST_OUTPUT")) {
-    srunner_set_xml(runner, xml_file);
-  }
+        /* Create a new test runner each iteration */
+        runner = srunner_create(NULL);
 
-  requested = getenv("PR_TEST_SUITE");
-  if (requested != NULL) {
-    Suite *suite;
+        /* Set log file and optionally XML output */
+        srunner_set_log(runner, log_file);
+        if (getenv("PR_XML_TEST_OUTPUT")) {
+            srunner_set_xml(runner, xml_file);
+        }
 
-    suite = tests_get_suite(requested);
-    if (suite != NULL) {
-      srunner_add_suite(runner, suite);
+        requested = getenv("PR_TEST_SUITE");
+        if (requested != NULL) {
+            Suite *suite = tests_get_suite(requested);
+            if (suite != NULL) {
+                srunner_add_suite(runner, suite);
+            } else {
+                fprintf(stderr, "No such test suite ('%s') requested via PR_TEST_SUITE\n", requested);
+                srunner_free(runner);
+                return EXIT_FAILURE;
+            }
+        } else {
+            unsigned int j;
+            for (j = 0; suites[j].name; j++) {
+                Suite *suite = (suites[j].get_suite)();
+                if (suite != NULL) {
+                    srunner_add_suite(runner, suite);
+                }
+            }
+        }
 
+        /* Configure the Trace API to write to stderr. */
+        pr_trace_use_stderr(TRUE);
+
+        requested = getenv("PR_TEST_NOFORK");
+        if (requested != NULL) {
+            srunner_set_fork_status(runner, CK_NOFORK);
+        } else {
+            requested = getenv("CK_DEFAULT_TIMEOUT");
+            if (requested == NULL) {
+                setenv("CK_DEFAULT_TIMEOUT", "60", 1);
+            }
+        }
+
+        /* Record start time */
+        if (clock_gettime(CLOCK_MONOTONIC, &start) == -1) {
+            perror("clock_gettime");
+            exit(EXIT_FAILURE);
+        }
+
+        /* Run all tests in CK_NORMAL mode */
+        srunner_run_all(runner, CK_NORMAL);
+
+        /* Record end time */
+        if (clock_gettime(CLOCK_MONOTONIC, &end) == -1) {
+            perror("clock_gettime");
+            exit(EXIT_FAILURE);
+        }
+
+        /* Calculate elapsed time in seconds */
+        elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
+        run_times[i] = elapsed;
+
+        nfailed = srunner_ntests_failed(runner);
+        overall_failed += nfailed;
+
+        srunner_free(runner);
+
+        printf("Run %d: elapsed time = %.3f seconds, failed tests = %d\n", i+1, elapsed, nfailed);
+    }
+
+    /* Sort the run times to compute the median */
+    qsort(run_times, runs, sizeof(double), cmp_doubles);
+    double median;
+    if (runs % 2 == 0) {
+        median = (run_times[runs/2 - 1] + run_times[runs/2]) / 2.0;
     } else {
-      fprintf(stderr, "No such test suite ('%s') requested via PR_TEST_SUITE\n",
-        requested);
-      srunner_free(runner);
-      return EXIT_FAILURE;
+        median = run_times[runs/2];
     }
 
-  } else {
-    register unsigned int i;
+    printf("Median test execution time over %d runs: %.3f seconds\n", runs, median);
 
-    for (i = 0; suites[i].name; i++) {
-      Suite *suite;
+    if (overall_failed != 0) {
+        fprintf(stderr, "-------------------------------------------------\n");
+        fprintf(stderr, "FAILED in %d tests across all runs\n", overall_failed);
+        fprintf(stderr, "Please send email to:\n");
+        fprintf(stderr, "  proftp-devel@lists.sourceforge.net\n");
+        fprintf(stderr, "containing the `%s' file (in the tests/ directory)\n", log_file);
+        fprintf(stderr, "and the output from running `proftpd -V'\n");
+        fprintf(stderr, "-------------------------------------------------\n");
 
-      suite = (suites[i].get_suite)();
-      if (suite != NULL) {
-        srunner_add_suite(runner, suite);
-      }
+        return EXIT_FAILURE;
     }
-  }
 
-  /* Configure the Trace API to write to stderr. */
-  pr_trace_use_stderr(TRUE);
-
-  requested = getenv("PR_TEST_NOFORK");
-  if (requested != NULL) {
-    srunner_set_fork_status(runner, CK_NOFORK);
-
-  } else {
-    requested = getenv("CK_DEFAULT_TIMEOUT");
-    if (requested == NULL) {
-      setenv("CK_DEFAULT_TIMEOUT", "60", 1);
-    }
-  }
-
-  srunner_run_all(runner, CK_NORMAL);
-
-  nfailed = srunner_ntests_failed(runner);
-
-  if (runner != NULL) {
-    srunner_free(runner);
-  }
-
-  if (nfailed != 0) {
-    fprintf(stderr, "-------------------------------------------------\n");
-    fprintf(stderr, " FAILED %d %s\n\n", nfailed,
-      nfailed != 1 ? "tests" : "test");
-    fprintf(stderr, " Please send email to:\n\n");
-    fprintf(stderr, "   proftp-devel@lists.sourceforge.net\n\n");
-    fprintf(stderr, " containing the `%s' file (in the tests/ directory)\n", log_file);
-    fprintf(stderr, " and the output from running `proftpd -V'\n");
-    fprintf(stderr, "-------------------------------------------------\n");
-
-    return EXIT_FAILURE;
-  }
-
-  return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }

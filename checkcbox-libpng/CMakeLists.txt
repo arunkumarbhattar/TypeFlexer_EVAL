@@ -31,7 +31,8 @@ cmake_policy(VERSION 3.1)
 set(CMAKE_C_COMPILER /home/arun/Desktop/TypeFlexer-Clang/llvm/cmake-build-debug/bin/clang)
 
 # Add compile options
-add_compile_options(-fwasmsbx -DWASM_SBX -O2)
+#add_compile_options(-fwasmsbx -DWASM_SBX -O2)
+add_compile_options(-fheapsbx -fno-flsm -DHEAP_SBX -O2)
 
 # Add linker options
 add_link_options(-ldl -lstdc++)
@@ -619,8 +620,8 @@ if(PNG_STATIC)
   # does not work without changing name
   set(PNG_LIB_NAME_STATIC png_static)
   add_library(png_static STATIC ${libpng_sources})
-  target_compile_options(png_static PRIVATE -O2 -fwasmsbx -DWASM_SBX)
-  #target_compile_options(png_static PRIVATE -fheapsbx -DHEAP_SBX)
+  #target_compile_options(png_static PRIVATE -O2 -fwasmsbx -DWASM_SBX)
+  target_compile_options(png_static PRIVATE -O2 -fno-flsm -fheapsbx -DHEAP_SBX)
   add_dependencies(png_static genfiles)
   # MSVC doesn't use a different file extension for shared vs. static
   # libs. We are able to change OUTPUT_NAME to remove the _static

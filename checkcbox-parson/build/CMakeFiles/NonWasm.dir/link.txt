@@ -1,1 +1,0 @@
-/home/arun/Desktop/TypeFlexer-Clang/llvm/cmake-build-debug/bin/clang++  -ldl -lpthread -ldl -lstdc++ CMakeFiles/NonWasm.dir/tests.tainted.c.o CMakeFiles/NonWasm.dir/parson.tainted.c.o -o NonWasm  ../static_libraries/tainted.a ../static_libraries/libSBX_CON_LIB.a ../static_libraries/libisc_lib_final.a -ldl 

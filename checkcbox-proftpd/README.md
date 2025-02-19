@@ -96,13 +96,18 @@ helps us to know what needs to be documented, described, and/or fixed.
 
 ************************************************************************
 # CLION 
-echo $LD_LIBRARY_PATH
-./configure --enable-tests CC=/home/twinturbo/Desktop/ExtraSpace/CheckCBox_Compiler/llvm/cmake-build-debug/bin/clang --enable-build-type=debug --enable-sanitizers=address  LDFLAGS="-L/home/twinturbo/Desktop/ExtraSpace/checkcbox-proftpd/Checkcbox_LIBS/" LIBS="-ldl -lstdc++ -lSBX_CON_LIB -lisc_lib_final"
-If your Shared libraries (libisc_final.so) are not getting discovered -->
-follow these steps -->
---> Add your library directory to the below folder (ubuntu) --> https://blog.andrewbeacock.com/2007/10/how-to-add-shared-libraries-to-linuxs.html
-(base) twinturbo@twinturbo-OptiPlex-3090:~/Desktop/ExtraSpace/checkcbox-proftpd$ vim /etc/ld.so.conf.d/myLocalLibs.conf
-(base) twinturbo@twinturbo-OptiPlex-3090:~/Desktop/ExtraSpace/checkcbox-proftpd$ sudo vim /etc/ld.so.conf.d/myLocalLibs.conf
-(base) twinturbo@twinturbo-OptiPlex-3090:~/Desktop/ExtraSpace/checkcbox-proftpd$ sudo ldconfig
-(base) twinturbo@twinturbo-OptiPlex-3090:~/Desktop/ExtraSpace/checkcbox-proftpd$ bash
 
+# git clone https://github.com/libcheck/check.git
+# cd check
+# mkdir build && cd build
+# cmake ../
+# make
+# make install
+# sudo ldconfig 
+
+echo $LD_LIBRARY_PATH
+./configure --enable-tests \
+CC="/home/arun/Desktop/TypeFlexer-Clang/llvm/cmake-build-debug/bin/clang" \
+CFLAGS="-g2 -O2 -Wall -fno-omit-frame-pointer -fno-strict-aliasing -fwasmsbx -DWASM_SBX" \
+LDFLAGS="-L/home/arun/Desktop/TypeFlexer_EVAL/WASM_SBX_LIB -L/home/arun/Desktop/TypeFlexer-Clang/llvm/cmake-build-debug/lib" \
+LIBS="-ldl -lstdc++ -lSBX_CON_LIB -lisc_lib_final"

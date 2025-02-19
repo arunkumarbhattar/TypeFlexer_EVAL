@@ -1,0 +1,356 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.1"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						6,
+						7,
+						8,
+						20,
+						21,
+						22
+					]
+				},
+				{
+					"build" : "libpng",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-libpng-Debug-90500cde6d0b8ebb07b2.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.1"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "/home/arun/Desktop/TypeFlexer_EVAL/checkcbox-libpng",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						23,
+						24,
+						25,
+						26,
+						27,
+						28,
+						29
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "PNGMINUS",
+					"targetIndexes" : 
+					[
+						6,
+						7,
+						8,
+						20,
+						21,
+						22
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "libpng",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						23,
+						24,
+						25,
+						26,
+						27,
+						28,
+						29
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "genfiles::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-genfiles-Debug-1170bbd1cc7e28f71980.json",
+					"name" : "genfiles",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "genprebuilt::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-genprebuilt-Debug-c78097e202b7a5bc1af4.json",
+					"name" : "genprebuilt",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "gensym::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-gensym-Debug-a7a336cbc61f3582842f.json",
+					"name" : "gensym",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "genvers::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-genvers-Debug-84bdbd495b2715ac88fb.json",
+					"name" : "genvers",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "png::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-png-Debug-1cc754d64e433e09b87c.json",
+					"name" : "png",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "png-fix-itxt::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-png-fix-itxt-Debug-1ea48aaf4ceded155422.json",
+					"name" : "png-fix-itxt",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "png2pnm::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-png2pnm-Debug-a0475c2b4229b3677bed.json",
+					"name" : "png2pnm",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "png2pnm_hoard::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-png2pnm_hoard-Debug-868a28caaf10af5e858c.json",
+					"name" : "png2pnm_hoard",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "png2pnm_noop::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-png2pnm_noop-Debug-bb1481e6ee75fffd48b5.json",
+					"name" : "png2pnm_noop",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "png_static::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-png_static-Debug-1dfe403da255d8e114b8.json",
+					"name" : "png_static",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pngfix::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-pngfix-Debug-77d73534bae7e57b01ef.json",
+					"name" : "pngfix",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pngimage::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-pngimage-Debug-29b70e31202bee3d27a9.json",
+					"name" : "pngimage",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pnglibconf_c::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-pnglibconf_c-Debug-514229595de76f396dda.json",
+					"name" : "pnglibconf_c",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pnglibconf_h::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-pnglibconf_h-Debug-180a6cedc32f4d7f10b1.json",
+					"name" : "pnglibconf_h",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pnglibconf_out::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-pnglibconf_out-Debug-4ca6e918d5eeeb35fc90.json",
+					"name" : "pnglibconf_out",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pngprefix_h::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-pngprefix_h-Debug-604c7df39f26d2ea16c2.json",
+					"name" : "pngprefix_h",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pngstest::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-pngstest-Debug-58f4e761169cc8fd01b1.json",
+					"name" : "pngstest",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pngtest::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-pngtest-Debug-b7b2cdbe2c0ea82cfc45.json",
+					"name" : "pngtest",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pngunknown::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-pngunknown-Debug-ded66661d146c207fd40.json",
+					"name" : "pngunknown",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pngvalid::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-pngvalid-Debug-911cf5e13c94e1cf774c.json",
+					"name" : "pngvalid",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "pnm2png::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-pnm2png-Debug-aef9c36d904617e2cfe3.json",
+					"name" : "pnm2png",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "pnm2png_hoard::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-pnm2png_hoard-Debug-55605f8ae5d7574bcf97.json",
+					"name" : "pnm2png_hoard",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "pnm2png_noop::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-pnm2png_noop-Debug-e68325447d107cc36ed8.json",
+					"name" : "pnm2png_noop",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "scripts_intprefix_out::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-scripts_intprefix_out-Debug-a13d4bdc5a64cfe01537.json",
+					"name" : "scripts_intprefix_out",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "scripts_pnglibconf_c::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-scripts_pnglibconf_c-Debug-6f11b76364e2a065d36e.json",
+					"name" : "scripts_pnglibconf_c",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "scripts_prefix_out::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-scripts_prefix_out-Debug-5ee06aeb9a35af41a1b8.json",
+					"name" : "scripts_prefix_out",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "scripts_sym_out::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-scripts_sym_out-Debug-3ba9a24ca3c53329f844.json",
+					"name" : "scripts_sym_out",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "scripts_symbols_chk::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-scripts_symbols_chk-Debug-f2f3367585f6c208aa65.json",
+					"name" : "scripts_symbols_chk",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "scripts_symbols_out::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-scripts_symbols_out-Debug-22334aa36ea986a0562a.json",
+					"name" : "scripts_symbols_out",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "scripts_vers_out::@0ccab45d953d31f6e478",
+					"jsonFile" : "target-scripts_vers_out-Debug-f9f00530725610db408d.json",
+					"name" : "scripts_vers_out",
+					"projectIndex" : 1
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/arun/Desktop/TypeFlexer_EVAL/checkcbox-libpng/contrib/pngminus/cmake-build-debug",
+		"source" : "/home/arun/Desktop/TypeFlexer_EVAL/checkcbox-libpng/contrib/pngminus"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

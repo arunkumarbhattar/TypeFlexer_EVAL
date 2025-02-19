@@ -506,7 +506,7 @@ int pr_cmd_read(cmd_rec **res) {
   while (TRUE) {
     pr_signals_handle();
 
-    t_memset(cmd_buf, '\0', cmd_bufsz);
+    memset(cmd_buf, '\0', cmd_bufsz);
 
     cmd_buflen = pr_netio_telnet_gets2(cmd_buf, cmd_bufsz, session.c->instrm,
       session.c->outstrm);
@@ -577,7 +577,7 @@ int pr_cmd_read(cmd_rec **res) {
       flags |= PR_STR_FL_PRESERVE_WHITESPACE;
     }
 
-    cmd = make_ftp_cmd(session.pool, (char*)TaintedToCheckedStrAdaptor(ptr, t_strlen(ptr)), cmd_buflen, flags);
+    cmd = make_ftp_cmd(session.pool, (char*)TaintedToCheckedStrAdaptor(ptr, strlen(ptr)), cmd_buflen, flags);
     if (cmd != NULL) {
       *res = cmd;
 
